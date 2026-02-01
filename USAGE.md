@@ -68,3 +68,15 @@ kubectl apply -f infra/argocd/app-helm-dev.yaml
 > Note: we use **two** Ingress resources so we can apply rewrite only to /api without breaking frontend routes (e.g. /events/new).
   - `/` -> frontend
   - `/api/*` -> API (with rewrite to strip `/api`)
+
+## Upgrading from earlier versions
+
+If you deployed an earlier version that created a single Ingress named `events`, newer versions split Ingress into:
+- `events` (API only, with `/api` rewrite)
+- `events-frontend` (frontend, no rewrite)
+
+This update is designed to be applied in-place. If you still get an Ingress conflict, delete the old one once:
+```bash
+kubectl -n master-k8s delete ingress events || true
+kubectl apply -k infra/kustomize/overlays/dev
+```

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: events-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: events-frontend
+  template:
+    metadata:
+      labels:
+        app: events-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/example/master-k8s-frontend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_API_BASE_URL
+              value: "/api"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: master-k8s
+description: Frontend + API learning stack (Ingress) 
+type: application
+version: 0.1.0
+appVersion: 0.1.0

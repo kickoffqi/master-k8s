@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: events-frontend
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  replicas: {{ .Values.replicaCount.frontend }}
+  selector:
+    matchLabels:
+      app: events-frontend
+  template:
+    metadata:
+      labels:
+        app: events-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
+          imagePullPolicy: {{ .Values.images.frontend.pullPolicy }}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_API_BASE_URL
+              value: {{ .Values.frontend.publicApiBaseUrl | quote }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: events-frontend
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  selector:
+    app: events-frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000

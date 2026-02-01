@@ -56,11 +56,13 @@ async def readyz() -> dict:
 
 @app.get("/events", response_model=List[Event])
 async def list_events() -> List[Event]:
-    return list(EVENTS.values())
+    return sorted(EVENTS.values(), key=lambda e: e.start_time, reverse=True)
 
 
 @app.post("/events", response_model=Event, status_code=201)
 async def create_event(payload: EventCreate) -> Event:
+    if payload.end_time <= payload.start_time:
+        raise HTTPException(status_code=400, detail="end_time must be after start_time")
     event_id = str(uuid4())
     event = Event(id=event_id, **payload.dict())
     EVENTS[event_id] = event
@@ -83,6 +85,8 @@ async def update_event(event_id: str, payload: EventUpdate) -> Event:
     updated = existing.dict()
     for k, v in payload.dict(exclude_unset=True).items():
         updated[k] = v
+    if updated.get("end_time") and updated.get("start_time") and updated["end_time"] <= updated["start_time"]:
+        raise HTTPException(status_code=400, detail="end_time must be after start_time")
     EVENTS[event_id] = Event(**updated)
     return EVENTS[event_id]
 

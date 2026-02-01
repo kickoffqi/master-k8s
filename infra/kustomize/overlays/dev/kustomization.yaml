@@ -5,7 +5,7 @@ resources:
 images:
   - name: ghcr.io/example/master-k8s-api
     newName: ghcr.io/kickoffqi/master-k8s-api
-    newTag: latest
+    newTag: sha-c26c159
   - name: ghcr.io/example/master-k8s-frontend
     newName: ghcr.io/kickoffqi/master-k8s-frontend
-    newTag: latest
+    newTag: sha-c26c159

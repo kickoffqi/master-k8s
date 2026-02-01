@@ -64,5 +64,7 @@ kubectl apply -f infra/argocd/app-helm-dev.yaml
 
 - The API is in-memory (no database). Restarting the API pod clears data.
 - The Ingress routes:
+
+> Note: we use **two** Ingress resources so we can apply rewrite only to /api without breaking frontend routes (e.g. /events/new).
   - `/` -> frontend
   - `/api/*` -> API (with rewrite to strip `/api`)

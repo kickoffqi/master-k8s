@@ -2,26 +2,16 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: events
+  name: events-frontend
   namespace: {{ .Values.namespace | quote }}
-  annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: "/$2"
 spec:
   ingressClassName: {{ .Values.ingress.className | quote }}
   rules:
     - host: {{ .Values.ingress.host | quote }}
       http:
         paths:
-          - path: /api(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: events-api
-                port:
-                  number: 8000
-          - path: /(.*)
-            pathType: ImplementationSpecific
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: events-frontend

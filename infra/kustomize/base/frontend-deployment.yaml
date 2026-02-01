@@ -20,11 +20,14 @@ spec:
           env:
             - name: NEXT_PUBLIC_API_BASE_URL
               value: "/api"
+          
+            - name: API_BASE_URL
+              value: "http://events-api:8000"
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: 3000
           livenessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: 3000

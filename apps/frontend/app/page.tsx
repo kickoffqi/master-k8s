@@ -1,11 +1,17 @@
 import Link from 'next/link';
 
-const API = process.env.NEXT_PUBLIC_API_BASE_URL || '/api';
+// Server-side: use cluster DNS to talk to API directly.
+// Client-side (forms etc.): use NEXT_PUBLIC_API_BASE_URL which should be "/api" via Ingress.
+const SERVER_API = process.env.API_BASE_URL || 'http://events-api:8000';
 
 async function getEvents() {
-  const res = await fetch(`${API}/events`, { cache: 'no-store' });
-  if (!res.ok) return [];
-  return res.json();
+  try {
+    const res = await fetch(`${SERVER_API}/events`, { cache: 'no-store' });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
 }
 
 export default async function Home() {

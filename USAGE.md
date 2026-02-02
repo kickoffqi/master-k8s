@@ -80,3 +80,8 @@ This update is designed to be applied in-place. If you still get an Ingress conf
 kubectl -n master-k8s delete ingress events || true
 kubectl apply -k infra/kustomize/overlays/dev
 ```
+
+## Runbooks / Learning notes
+
+- Ingress/AKS troubleshooting: `docs/runbook-aks-ingress.md`
+- GitOps image automation: `docs/gitops-image-updater.md`

@@ -3,6 +3,12 @@ kind: Application
 metadata:
   name: master-k8s-helm-dev
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: api=ghcr.io/kickoffqi/master-k8s-api,frontend=ghcr.io/kickoffqi/master-k8s-frontend
+    argocd-image-updater.argoproj.io/api.allow-tags: regexp:^sha-[0-9a-f]+$
+    argocd-image-updater.argoproj.io/frontend.allow-tags: regexp:^sha-[0-9a-f]+$
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-target: helmvalues
 spec:
   project: default
   source:

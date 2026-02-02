@@ -1,0 +1,2 @@
+curl -L -o infra/argocd/addons/argocd-image-updater/install.yaml \
+https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/manifests/install.yaml

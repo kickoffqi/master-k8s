@@ -1,0 +1,33 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: master-k8s-helm-dev
+  namespace: argocd
+spec:
+  namespace: argocd
+  writeBackConfig:
+    method: "git:secret:argocd/image-updater-git-creds"
+  applicationRefs:
+    - namePattern: "master-k8s-helm-dev"
+      writeBackConfig:
+        # Write directly to the chart values file in this repo
+        writeBackTarget: "helmvalues:./values.yaml"
+      images:
+        - alias: api
+          imageName: ghcr.io/kickoffqi/master-k8s-api
+          commonUpdateSettings:
+            updateStrategy: newest-build
+            allowTags: "regexp:^sha-[0-9a-f]+$"
+          manifestTargets:
+            helm:
+              name: "images.api.repository"
+              tag: "images.api.tag"
+        - alias: frontend
+          imageName: ghcr.io/kickoffqi/master-k8s-frontend
+          commonUpdateSettings:
+            updateStrategy: newest-build
+            allowTags: "regexp:^sha-[0-9a-f]+$"
+          manifestTargets:
+            helm:
+              name: "images.frontend.repository"
+              tag: "images.frontend.tag"

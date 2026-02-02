@@ -4,7 +4,7 @@ import EventsList from './_components/EventsList';
 export default function Home() {
   return (
     <div style={{ maxWidth: 880 }}>
-      <h1 style={{ marginBottom: 6 }}>Event Studio</h1>
+      <h1 style={{ marginBottom: 6 }}>Event Studio V1</h1>
       <p style={{ marginTop: 0, color: '#555' }}>
         A simple frontend + API demo for learning Kubernetes (Ingress, probes, deployments, kustomize/helm/argocd).
       </p>

@@ -12,6 +12,8 @@ spec:
       labels:
         app: events-frontend
     spec:
+      serviceAccountName: events-frontend
+      automountServiceAccountToken: false
       containers:
         - name: frontend
           image: ghcr.io/example/master-k8s-frontend:latest

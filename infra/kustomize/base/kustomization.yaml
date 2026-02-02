@@ -9,3 +9,6 @@ resources:
   - frontend-service.yaml
   - ingress-api.yaml
   - ingress-frontend.yaml
+  - rbac/serviceaccounts.yaml
+  - rbac/role-ops-readonly.yaml
+  - rbac/rolebinding-ops-readonly.yaml

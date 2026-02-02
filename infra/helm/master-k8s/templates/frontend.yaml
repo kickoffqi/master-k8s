@@ -13,6 +13,8 @@ spec:
       labels:
         app: events-frontend
     spec:
+      serviceAccountName: events-frontend
+      automountServiceAccountToken: false
       containers:
         - name: frontend
           image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"

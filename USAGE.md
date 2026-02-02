@@ -85,3 +85,7 @@ kubectl apply -k infra/kustomize/overlays/dev
 
 - Ingress/AKS troubleshooting: `docs/runbook-aks-ingress.md`
 - GitOps image automation: `docs/gitops-image-updater.md`
+
+## RBAC
+
+See: `docs/rbac.md`

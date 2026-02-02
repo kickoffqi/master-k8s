@@ -12,6 +12,8 @@ spec:
       labels:
         app: events-api
     spec:
+      serviceAccountName: events-api
+      automountServiceAccountToken: false
       containers:
         - name: api
           image: ghcr.io/example/master-k8s-api:latest

@@ -1,26 +1,21 @@
 namespace: master-k8s
-
 images:
   api:
     repository: ghcr.io/kickoffqi/master-k8s-api
-    tag: dev
+    tag: sha-47dd8c6
     pullPolicy: IfNotPresent
   frontend:
     repository: ghcr.io/kickoffqi/master-k8s-frontend
-    tag: dev
+    tag: sha-47dd8c6
     pullPolicy: IfNotPresent
-
 replicaCount:
   api: 2
   frontend: 1
-
 ingress:
   enabled: true
   className: nginx
   host: master.local
-
 api:
   corsAllowOrigins: "*"
-
 frontend:
   publicApiBaseUrl: "/api"

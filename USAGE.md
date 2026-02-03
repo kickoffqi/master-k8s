@@ -89,3 +89,21 @@ kubectl apply -k infra/kustomize/overlays/dev
 ## RBAC
 
 See: `docs/rbac.md`
+
+## Helm vs Kustomize (avoid GitOps confusion)
+
+This repo supports **two** deployment styles:
+
+- **Helm**: `infra/helm/master-k8s`
+- **Kustomize**: `infra/kustomize/overlays/dev`
+
+If you are using **Argo CD**, it will only sync the path configured in the Argo CD Application.
+
+Common mistake (we hit it): changing Kustomize manifests while Argo CD is tracking the Helm app (or vice versa).
+
+### Quick rule
+
+- Using **Argo CD app `master-k8s-helm-dev`** → make changes under `infra/helm/master-k8s` (e.g. `values.yaml`, templates)
+- Using **Argo CD app `master-k8s-kustomize-dev`** → make changes under `infra/kustomize` (base/overlays)
+
+Tip: keep only one of the apps enabled at a time to avoid double-managing the same resources.

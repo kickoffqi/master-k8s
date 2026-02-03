@@ -75,3 +75,12 @@ Apply and exec:
 kubectl apply -f ops-shell.yaml
 kubectl -n master-k8s exec -it ops-shell -- sh
 ```
+
+---
+
+## GitOps note (Helm vs Kustomize)
+
+If your cluster is deployed via **Argo CD**, make sure you're editing the manifests that Argo CD is actually tracking:
+
+- Argo CD `master-k8s-helm-dev` → edit Helm files (`infra/helm/master-k8s/...`)
+- Argo CD `master-k8s-kustomize-dev` → edit Kustomize files (`infra/kustomize/...`)

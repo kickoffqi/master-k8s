@@ -30,7 +30,7 @@ class EventUpdate(BaseModel):
     end_time: Optional[datetime] = None
 
 
-app = FastAPI(title="Master K8s Events API", version="0.1.0")
+app = FastAPI(title="Master K8s Events API", version="0.2.0")
 
 allowed_origins = os.getenv("CORS_ALLOW_ORIGINS", "*").split(",")
 app.add_middleware(

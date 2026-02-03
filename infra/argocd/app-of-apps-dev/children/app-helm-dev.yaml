@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: master-k8s-helm-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/kickoffqi/master-k8s
+    targetRevision: dev
+    path: infra/helm/master-k8s
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: master-k8s
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

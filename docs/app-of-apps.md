@@ -5,36 +5,36 @@ Application object already created in the cluster (unless that Application is it
 
 Solution: **App-of-Apps**.
 
-## What this repo provides
+## This repo's structure
 
-- `infra/argocd/app-of-apps/root-app.yaml`: the root Application
-- `infra/argocd/app-of-apps/kustomization.yaml`: lists child apps/addons
+We keep **two** roots so dev/prod can track different Git revisions:
 
-Child resources managed:
-- `master-k8s-helm-dev` (main app)
+- **Dev root:** `infra/argocd/app-of-apps-dev/root-app.yaml` → tracks `dev`
+- **Prod root:** `infra/argocd/app-of-apps-prod/root-app.yaml` → tracks `main`
+
+Each root uses a local `kustomization.yaml` and vendors child YAMLs under `children/`.
+This is required because Argo CD runs `kustomize build` with security restrictions (no `../` references).
+
+## What each root manages
+
+### Dev root (`master-k8s-root-dev`)
+- `master-k8s-helm-dev` (main dev app)
 - `argo-rollouts` addon
 - `argocd-image-updater` addon
 - `ImageUpdater` CR for `master-k8s-helm-dev` (requires secret `argocd/image-updater-git-creds`)
 
+### Prod root (`master-k8s-root-prod`)
+- `master-k8s-helm-prod` (prod app)
+
+> We intentionally do **not** manage shared addons twice. Addons are cluster-scoped and should be installed once.
+
 ## Install
 
-Apply the root app once:
+Apply each root once:
 
 ```bash
-kubectl apply -f infra/argocd/app-of-apps/root-app.yaml
+kubectl apply -f infra/argocd/app-of-apps-dev/root-app.yaml
+kubectl apply -f infra/argocd/app-of-apps-prod/root-app.yaml
 ```
 
-After that, update child apps/addons only via Git.
-
-## Notes
-
-- If you previously created child apps manually, the root app will adopt/update them.
-- Make sure required secrets exist (e.g., `argocd/image-updater-git-creds`).
-
-## Why we vendor child manifests into the app-of-apps folder
-
-Argo CD runs `kustomize build` with security restrictions enabled.
-That means a kustomize base cannot reference files outside its directory (e.g. `../app-helm-dev.yaml`).
-
-To avoid the "file is not in or below" error, we keep the child Application YAMLs
-inside `infra/argocd/app-of-apps/children/`.
+After that, manage changes via Git.

@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-rollouts
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/kickoffqi/master-k8s
+    targetRevision: dev
+    path: infra/argocd/addons/argo-rollouts
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-rollouts
+
+  # CRDs are frequently mutated by the Kubernetes apiserver (defaulting, ordering, status),
+  # which can cause persistent OutOfSync. Ignore diffs for CRDs.
+  ignoreDifferences:
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      # 使用 jq 表达式可以忽略数组中所有元素的特定字段
+      jqPathExpressions:
+        - .spec.preserveUnknownFields
+        - .status
+        - .spec.conversion
+        - .metadata.annotations["controller-gen.kubebuilder.io/version"]
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5 # 失败时重试5次
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+    syncOptions:
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+      - SkipDryRunOnMissingResource=true # 如果引用的CRD还没创建，先跳过检查

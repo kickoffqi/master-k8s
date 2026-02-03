@@ -1,0 +1,31 @@
+namespace: master-k8s
+images:
+  api:
+    repository: ghcr.io/kickoffqi/master-k8s-api
+    tag: sha-3513f77
+    pullPolicy: IfNotPresent
+  frontend:
+    repository: ghcr.io/kickoffqi/master-k8s-frontend
+    tag: sha-ac326e3
+    pullPolicy: IfNotPresent
+replicaCount:
+  api: 5
+  frontend: 5
+ingress:
+  enabled: true
+  className: nginx
+  host: master.local
+api:
+  corsAllowOrigins: "*"
+frontend:
+  publicApiBaseUrl: "/api"
+
+rollouts:
+  enabled: true
+  # Canary strategy example: 20% -> 50% -> 100%
+  canarySteps:
+    - setWeight: 20
+    - pause: { duration: 30s }
+    - setWeight: 50
+    - pause: { duration: 30s }
+    - setWeight: 100

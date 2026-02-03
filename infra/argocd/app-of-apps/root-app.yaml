@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: master-k8s-root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/kickoffqi/master-k8s
+    targetRevision: dev
+    path: infra/argocd/app-of-apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      # Needed when child apps use ignoreDifferences
+      - RespectIgnoreDifferences=true

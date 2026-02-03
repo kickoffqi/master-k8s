@@ -111,3 +111,7 @@ Tip: keep only one of the apps enabled at a time to avoid double-managing the sa
 ## Argo Rollouts
 
 See: `docs/argo-rollouts.md`
+
+## Argo CD App-of-Apps
+
+See: `docs/app-of-apps.md`

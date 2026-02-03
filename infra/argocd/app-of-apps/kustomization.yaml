@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Main application (Helm)
+  - ../app-helm-dev.yaml
+
+  # Addons
+  - ../addons/argo-rollouts/app.yaml
+  - ../addons/argocd-image-updater/app.yaml
+
+  # ImageUpdater CR (requires secret `argocd/image-updater-git-creds` to exist)
+  - ../image-updater/master-k8s-helm-dev.yaml

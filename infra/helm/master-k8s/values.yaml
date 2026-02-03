@@ -9,7 +9,7 @@ images:
     tag: sha-ac326e3
     pullPolicy: IfNotPresent
 replicaCount:
-  api: 1
+  api: 5
   frontend: 5
 ingress:
   enabled: true

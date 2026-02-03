@@ -21,7 +21,7 @@ frontend:
   publicApiBaseUrl: "/api"
 
 rollouts:
-  enabled: false
+  enabled: true
   # Canary strategy example: 20% -> 50% -> 100%
   canarySteps:
     - setWeight: 20

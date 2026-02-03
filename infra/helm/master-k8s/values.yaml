@@ -2,11 +2,11 @@ namespace: master-k8s
 images:
   api:
     repository: ghcr.io/kickoffqi/master-k8s-api
-    tag: sha-afd0e02
+    tag: sha-1af6f54
     pullPolicy: IfNotPresent
   frontend:
     repository: ghcr.io/kickoffqi/master-k8s-frontend
-    tag: sha-afd0e02
+    tag: sha-1af6f54
     pullPolicy: IfNotPresent
 replicaCount:
   api: 2

@@ -115,3 +115,11 @@ See: `docs/argo-rollouts.md`
 ## Argo CD App-of-Apps
 
 See: `docs/app-of-apps.md`
+
+## Production (pinned version tags)
+
+- Helm values:
+  - Dev: `infra/helm/master-k8s/values-dev.yaml`
+  - Prod: `infra/helm/master-k8s/values-prod.yaml`
+- Argo CD app (prod): `infra/argocd/app-helm-prod.yaml`
+- Promotion flow: `docs/prod-promotion.md`

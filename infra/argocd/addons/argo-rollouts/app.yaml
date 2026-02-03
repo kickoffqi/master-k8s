@@ -21,7 +21,8 @@ spec:
       # Use jsonPointers for maximum compatibility across Argo CD versions
       jsonPointers:
         - /status
-        - /metadata/annotations
+        - /metadata
+        - /annotations
         - /spec/conversion
         - /spec/versions
 

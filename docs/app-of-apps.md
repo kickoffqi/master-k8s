@@ -30,3 +30,11 @@ After that, update child apps/addons only via Git.
 
 - If you previously created child apps manually, the root app will adopt/update them.
 - Make sure required secrets exist (e.g., `argocd/image-updater-git-creds`).
+
+## Why we vendor child manifests into the app-of-apps folder
+
+Argo CD runs `kustomize build` with security restrictions enabled.
+That means a kustomize base cannot reference files outside its directory (e.g. `../app-helm-dev.yaml`).
+
+To avoid the "file is not in or below" error, we keep the child Application YAMLs
+inside `infra/argocd/app-of-apps/children/`.

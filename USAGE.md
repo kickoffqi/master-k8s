@@ -123,3 +123,10 @@ See: `docs/app-of-apps.md`
   - Prod: `infra/helm/master-k8s/values-prod.yaml`
 - Argo CD app (prod): `infra/argocd/app-helm-prod.yaml`
 - Promotion flow: `docs/prod-promotion.md`
+
+## Argo CD App-of-Apps (dev/prod roots)
+
+- Dev root app: `infra/argocd/app-of-apps-dev/root-app.yaml`
+- Prod root app: `infra/argocd/app-of-apps-prod/root-app.yaml`
+
+See: `docs/app-of-apps.md`

@@ -1,0 +1,40 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: master-k8s-helm-dev
+  namespace: argocd
+spec:
+  # Namespace where Argo CD Applications live
+  namespace: argocd
+
+  # Git write-back: commit changes back to this repo
+  writeBackConfig:
+    method: "git:secret:argocd/image-updater-git-creds"
+    gitConfig:
+      repository: "https://github.com/kickoffqi/master-k8s"
+      branch: "main"
+      # Path is relative to the Application's source.path (infra/helm/master-k8s)
+      writeBackTarget: "helmvalues:./values.yaml"
+
+  applicationRefs:
+    - namePattern: "master-k8s-helm-dev"
+      images:
+        - alias: api
+          imageName: ghcr.io/kickoffqi/master-k8s-api
+          commonUpdateSettings:
+            updateStrategy: newest-build
+            allowTags: "regexp:^sha-[0-9a-f]+$"
+          manifestTargets:
+            helm:
+              name: "images.api.repository"
+              tag: "images.api.tag"
+
+        - alias: frontend
+          imageName: ghcr.io/kickoffqi/master-k8s-frontend
+          commonUpdateSettings:
+            updateStrategy: newest-build
+            allowTags: "regexp:^sha-[0-9a-f]+$"
+          manifestTargets:
+            helm:
+              name: "images.frontend.repository"
+              tag: "images.frontend.tag"

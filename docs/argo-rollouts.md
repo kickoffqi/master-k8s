@@ -74,3 +74,12 @@ ArgoCD often reports CRDs as **OutOfSync** because the Kubernetes API server mut
 (default values, ordering, status fields, conversion webhook fields).
 
 In this repo, the addon Application includes `ignoreDifferences` for CRDs to prevent permanent drift.
+
+## If it still shows OutOfSync after adding ignoreDifferences
+
+Force Argo CD to re-evaluate the live state (hard refresh):
+
+```bash
+kubectl -n argocd patch app argo-rollouts --type merge \
+  -p '{"metadata":{"annotations":{"argocd.argoproj.io/refresh":"hard"}}}'
+```

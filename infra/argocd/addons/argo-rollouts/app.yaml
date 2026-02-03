@@ -18,15 +18,29 @@ spec:
   ignoreDifferences:
     - group: apiextensions.k8s.io
       kind: CustomResourceDefinition
+      # 建议不加 name 匹配所有 CRD，或者针对出问题的 CRD 增加配置
       jsonPointers:
         - /status
-        - /metadata/annotations
+        - /metadata/annotations/controller-gen.kubebuilder.io~1version
+        - /metadata/conversion
         - /spec/conversion
-        - /spec/versions
+        - /spec/versions/0/schema/openAPIV3Schema/description # 描述信息经常导致 diff
+    - group: apps
+      kind: Deployment
+      name: argo-rollouts
+      jsonPointers:
+        - /spec/template/spec/containers/0/image # 如果你手动改过镜像版本
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: 5 # 失败时重试5次
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
     syncOptions:
       - CreateNamespace=true
+      - SkipDryRunOnMissingResource=true # 如果引用的CRD还没创建，先跳过检查

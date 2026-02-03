@@ -12,6 +12,17 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-rollouts
+
+  # CRDs are frequently mutated by the Kubernetes apiserver (defaulting, ordering, status),
+  # which can cause persistent OutOfSync. Ignore those diffs.
+  ignoreDifferences:
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      jqPathExpressions:
+        - .status
+        - .metadata.annotations
+        - .spec.conversion
+
   syncPolicy:
     automated:
       prune: true

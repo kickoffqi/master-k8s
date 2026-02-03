@@ -30,17 +30,48 @@ kubectl -n master-k8s get pod -l app=events-frontend -o jsonpath='{.items[0].spe
 
 ## Test the read-only permissions
 
-Start a shell with the `ops-readonly` SA:
+### Option A (newer kubectl): use `--overrides`
+
+Recent kubectl versions have reduced/changed support for `kubectl run --serviceaccount`.
+This pattern works reliably:
 
 ```bash
 kubectl -n master-k8s run -it --rm ops-shell \
   --image=bitnami/kubectl:latest \
-  --serviceaccount=ops-readonly \
-  --restart=Never -- sh
+  --restart=Never \
+  --overrides='{ "spec":{ "serviceAccountName":"ops-readonly", "automountServiceAccountToken": true, "containers":[{ "name":"ops-shell", "image":"bitnami/kubectl:latest", "command":["/bin/sh"], "tty": true, "stdin": true }] } }'
 
 # inside:
 kubectl get pods
 kubectl get svc
 kubectl get ingress
 kubectl auth can-i delete pods  # should be no
+```
+
+### Option B: apply a debug Pod YAML
+
+If you prefer a file:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ops-shell
+  namespace: master-k8s
+spec:
+  serviceAccountName: ops-readonly
+  automountServiceAccountToken: true
+  containers:
+    - name: ops-shell
+      image: bitnami/kubectl:latest
+      command: ["/bin/sh"]
+      tty: true
+      stdin: true
+```
+
+Apply and exec:
+
+```bash
+kubectl apply -f ops-shell.yaml
+kubectl -n master-k8s exec -it ops-shell -- sh
 ```

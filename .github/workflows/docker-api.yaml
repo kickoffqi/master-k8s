@@ -33,6 +33,6 @@ jobs:
         with:
           context: ./apps/api
           # Only build on PR; do not push images from PRs by default.
-          push: false
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

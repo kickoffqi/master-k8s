@@ -18,11 +18,20 @@ spec:
   ignoreDifferences:
     - group: apiextensions.k8s.io
       kind: CustomResourceDefinition
-      jqPathExpressions:
-        - .spec.versions[].preserveUnknownFields
-        - .spec.conversion.webhook.clientConfig.caBundle
-        - .spec.versions[].schema.openAPIV3Schema.description
-        - .status
+      # 建议不加 name 匹配所有 CRD，或者针对出问题的 CRD 增加配置
+      jsonPointers:
+        - /status
+        - /spec/versions/0/preserveUnknownFields
+        - /spec/versions/1/preserveUnknownFields
+        - /metadata/annotations/controller-gen.kubebuilder.io~1version
+        - /metadata/conversion
+        - /spec/conversion
+        - /spec/versions/0/schema/openAPIV3Schema/description # 描述信息经常导致 diff
+    - group: apps
+      kind: Deployment
+      name: argo-rollouts
+      jsonPointers:
+        - /spec/template/spec/containers/0/image
 
   syncPolicy:
     automated:

@@ -67,3 +67,19 @@ kubectl argo rollouts undo events-frontend -n master-k8s
 
 - This initial setup uses a canary strategy **without traffic routing** (simpler). It still demonstrates progressive rollout and rollback.
 - Next step: integrate nginx traffic routing for real % traffic split (requires stable/canary services + ingress annotations).
+
+## Why the Argo Rollouts addon may show OutOfSync
+
+ArgoCD often reports CRDs as **OutOfSync** because the Kubernetes API server mutates CRD objects
+(default values, ordering, status fields, conversion webhook fields).
+
+In this repo, the addon Application includes `ignoreDifferences` for CRDs to prevent permanent drift.
+
+## If it still shows OutOfSync after adding ignoreDifferences
+
+Force Argo CD to re-evaluate the live state (hard refresh):
+
+```bash
+kubectl -n argocd patch app argo-rollouts --type merge \
+  -p '{"metadata":{"annotations":{"argocd.argoproj.io/refresh":"hard"}}}'
+```

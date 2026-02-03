@@ -4,8 +4,9 @@ metadata:
   name: ops-readonly
 rules:
   - apiGroups: [""]
-    resources: ["pods", "pods/log", "services", "endpoints", "events", "configmaps"]
-    verbs: ["get", "list", "watch"]
+    resources:
+      ["pods", "pods/log", "services", "endpoints", "events", "configmaps"]
+    verbs: ["get", "list", "watch", "create", "delete"]
   - apiGroups: ["apps"]
     resources: ["deployments", "replicasets"]
     verbs: ["get", "list", "watch"]

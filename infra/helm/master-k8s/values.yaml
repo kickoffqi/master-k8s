@@ -9,7 +9,7 @@ images:
     tag: sha-640ec79
     pullPolicy: IfNotPresent
 replicaCount:
-  api: 2
+  api: 1
   frontend: 1
 ingress:
   enabled: true

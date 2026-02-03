@@ -20,7 +20,7 @@ spec:
       kind: CustomResourceDefinition
       # 使用 jq 表达式可以忽略数组中所有元素的特定字段
       jqPathExpressions:
-        - .spec.versions[].preserveUnknownFields
+        - .spec.preserveUnknownFields
         - .status
         - .spec.conversion
         - .metadata.annotations["controller-gen.kubebuilder.io/version"]

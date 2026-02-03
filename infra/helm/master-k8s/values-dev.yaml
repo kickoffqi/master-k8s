@@ -10,7 +10,7 @@ images:
     pullPolicy: IfNotPresent
 replicaCount:
   api: 5
-  frontend: 5
+  frontend: 10
 ingress:
   enabled: true
   className: nginx

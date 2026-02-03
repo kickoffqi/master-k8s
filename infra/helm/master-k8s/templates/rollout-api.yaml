@@ -1,11 +1,12 @@
-{{- if not .Values.rollouts.enabled }}
-apiVersion: apps/v1
-kind: Deployment
+{{- if .Values.rollouts.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: events-api
   namespace: {{ .Values.namespace | quote }}
 spec:
   replicas: {{ .Values.replicaCount.api }}
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: events-api
@@ -33,18 +34,10 @@ spec:
             httpGet:
               path: /healthz
               port: 8000
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: events-api
-  namespace: {{ .Values.namespace | quote }}
-spec:
-  selector:
-    app: events-api
-  ports:
-    - name: http
-      port: 8000
-      targetPort: 8000
-
+  strategy:
+    canary:
+      maxSurge: 25%
+      maxUnavailable: 0
+      steps:
+{{ toYaml .Values.rollouts.canarySteps | indent 8 }}
 {{- end }}

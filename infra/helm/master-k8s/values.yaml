@@ -10,7 +10,7 @@ images:
     pullPolicy: IfNotPresent
 replicaCount:
   api: 1
-  frontend: 1
+  frontend: 5
 ingress:
   enabled: true
   className: nginx
@@ -19,3 +19,13 @@ api:
   corsAllowOrigins: "*"
 frontend:
   publicApiBaseUrl: "/api"
+
+rollouts:
+  enabled: false
+  # Canary strategy example: 20% -> 50% -> 100%
+  canarySteps:
+    - setWeight: 20
+    - pause: { duration: 30s }
+    - setWeight: 50
+    - pause: { duration: 30s }
+    - setWeight: 100

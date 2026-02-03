@@ -107,3 +107,7 @@ Common mistake (we hit it): changing Kustomize manifests while Argo CD is tracki
 - Using **Argo CD app `master-k8s-kustomize-dev`** → make changes under `infra/kustomize` (base/overlays)
 
 Tip: keep only one of the apps enabled at a time to avoid double-managing the same resources.
+
+## Argo Rollouts
+
+See: `docs/argo-rollouts.md`

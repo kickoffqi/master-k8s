@@ -6,6 +6,13 @@ on:
     paths:
       - "apps/api/**"
       - ".github/workflows/docker-api.yaml"
+  push:
+    branches: [main]
+    tags:
+      - "v*.*.*"
+    paths:
+      - "apps/api/**"
+      - ".github/workflows/docker-api.yaml"
 
 jobs:
   api:

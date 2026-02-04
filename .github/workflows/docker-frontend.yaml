@@ -6,6 +6,13 @@ on:
     paths:
       - "apps/frontend/**"
       - ".github/workflows/docker-frontend.yaml"
+  push:
+    branches: [main]
+    tags:
+      - "v*.*.*"
+    paths:
+      - "apps/frontend/**"
+      - ".github/workflows/docker-frontend.yaml"
 
 jobs:
   frontend:

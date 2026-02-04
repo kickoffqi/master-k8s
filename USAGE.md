@@ -130,3 +130,7 @@ See: `docs/app-of-apps.md`
 - Prod root app: `infra/argocd/app-of-apps-prod/root-app.yaml`
 
 See: `docs/app-of-apps.md`
+
+## Observability (Prometheus + Grafana)
+
+See: `docs/observability-prom-grafana.md`

@@ -14,7 +14,7 @@ images:
     pullPolicy: IfNotPresent
 
 replicaCount:
-  api: 2
+  api: 1
   frontend: 2
 
 ingress:

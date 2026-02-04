@@ -59,3 +59,13 @@ Open: http://localhost:9093
   - PodNotReady
   - Ingress 5xx rate
   - Rollout stuck/aborted
+
+## Argo CD note: CRDs may fail with "metadata.annotations too long"
+
+Prometheus Operator CRDs are large. If Argo CD applies them using client-side apply, it may attempt to
+store the full object in the `kubectl.kubernetes.io/last-applied-configuration` annotation and hit the
+262144 byte limit.
+
+This repo sets these sync options on the monitoring Application:
+- `ServerSideApply=true` (avoids the large last-applied annotation)
+- `Replace=true` (helps recover from partially-applied CRDs)

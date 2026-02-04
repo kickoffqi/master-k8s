@@ -51,8 +51,8 @@ spec:
 
         # 5) Too many restarts in a short window
         - alert: MasterK8sContainerHighRestartRate
-          expr: sum by (namespace, pod, container) (rate(kube_pod_container_status_restarts_total{namespace=~"master-k8s|master-k8s-prod"}[5m])) > 0.2
-          for: 10m
+          expr: sum by (namespace, pod, container) (rate(kube_pod_container_status_restarts_total{namespace=~"master-k8s|master-k8s-prod"}[5m])) > 0.01
+          for: 2m
           labels:
             severity: warning
           annotations:

@@ -2,11 +2,11 @@ namespace: master-k8s
 images:
   api:
     repository: ghcr.io/kickoffqi/master-k8s-api
-    tag: sha-3513f77
+    tag: sha-d9a702a
     pullPolicy: IfNotPresent
   frontend:
     repository: ghcr.io/kickoffqi/master-k8s-frontend
-    tag: sha-ac326e3
+    tag: sha-798ffcc
     pullPolicy: IfNotPresent
 replicaCount:
   api: 5
@@ -19,13 +19,12 @@ api:
   corsAllowOrigins: "*"
 frontend:
   publicApiBaseUrl: "/api"
-
 rollouts:
   enabled: true
   # Canary strategy example: 20% -> 50% -> 100%
   canarySteps:
-    - setWeight: 20
-    - pause: { duration: 30s }
-    - setWeight: 50
-    - pause: { duration: 30s }
-    - setWeight: 100
+  - setWeight: 20
+  - pause: {duration: 30s}
+  - setWeight: 50
+  - pause: {duration: 30s}
+  - setWeight: 100

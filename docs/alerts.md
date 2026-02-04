@@ -38,3 +38,31 @@ Delete when done:
 ```bash
 kubectl -n master-k8s delete pod crashloop
 ```
+
+## Testing: High restart rate alert
+
+The `MasterK8sContainerHighRestartRate` alert is based on `rate(kube_pod_container_status_restarts_total[5m])`.
+
+### Notes about thresholds
+
+- Production thresholds are typically conservative to avoid noise.
+- For **training**, you may temporarily lower the threshold and/or the `for` duration to make it easier to trigger.
+
+### Safe trigger (dev namespace)
+
+Create a crash-looping Deployment:
+
+```bash
+kubectl -n master-k8s create deployment restart-test --image=busybox \
+  -- /bin/sh -lc 'exit 1'
+
+kubectl -n master-k8s get pods -w
+```
+
+Cleanup:
+
+```bash
+kubectl -n master-k8s delete deployment restart-test
+```
+
+Tip: If you need faster restarts for a demo, ensure the alert threshold is set to a lower value during the exercise.

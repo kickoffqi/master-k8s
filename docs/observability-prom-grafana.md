@@ -69,3 +69,22 @@ store the full object in the `kubectl.kubernetes.io/last-applied-configuration` 
 This repo sets these sync options on the monitoring Application:
 - `ServerSideApply=true` (avoids the large last-applied annotation)
 - `Replace=true` (helps recover from partially-applied CRDs)
+
+## Troubleshooting: "monitoring-kube-prometheus-admission already exists"
+
+The kube-prometheus-stack chart can create admission webhook patch jobs and associated RBAC.
+In GitOps workflows, these hook resources can get stuck and cause repeated "already exists" errors.
+
+This repo disables Prometheus Operator admission webhooks:
+
+- `prometheusOperator.admissionWebhooks.enabled=false`
+- `prometheusOperator.admissionWebhooks.patch.enabled=false`
+
+If you still have leftover RBAC objects from a failed install, delete them once:
+
+```bash
+kubectl delete clusterrole monitoring-kube-prometheus-admission || true
+kubectl delete clusterrolebinding monitoring-kube-prometheus-admission || true
+kubectl -n monitoring delete role monitoring-kube-prometheus-admission || true
+kubectl -n monitoring delete rolebinding monitoring-kube-prometheus-admission || true
+```

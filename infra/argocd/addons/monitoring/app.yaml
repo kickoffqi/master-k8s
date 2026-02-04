@@ -10,6 +10,7 @@ spec:
     chart: kube-prometheus-stack
     targetRevision: 65.5.1
     helm:
+      releaseName: monitoring
       values: |
         grafana:
           enabled: true
@@ -17,6 +18,13 @@ spec:
           defaultDashboardsEnabled: true
           service:
             type: ClusterIP
+
+        # Prometheus Operator
+        prometheusOperator:
+          admissionWebhooks:
+            enabled: false
+            patch:
+              enabled: false
 
         prometheus:
           prometheusSpec:

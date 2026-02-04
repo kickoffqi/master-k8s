@@ -14,7 +14,7 @@ replicaCount:
 ingress:
   enabled: true
   className: nginx
-  host: master.local
+  host: dev.master.local
 api:
   corsAllowOrigins: "*"
 frontend:

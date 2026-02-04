@@ -36,18 +36,4 @@ spec:
             httpGet:
               path: /healthz
               port: 3000
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: events-frontend
-  namespace: {{ .Values.namespace | quote }}
-spec:
-  selector:
-    app: events-frontend
-  ports:
-    - name: http
-      port: 80
-      targetPort: 3000
-
 {{- end }}

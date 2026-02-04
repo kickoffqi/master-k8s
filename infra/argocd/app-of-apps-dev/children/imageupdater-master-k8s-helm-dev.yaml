@@ -12,9 +12,9 @@ spec:
     method: "git:secret:argocd/image-updater-git-creds"
     gitConfig:
       repository: "https://github.com/kickoffqi/master-k8s"
-      branch: "main"
+      branch: "dev"
       # Path is relative to the Application's source.path (infra/helm/master-k8s)
-      writeBackTarget: "helmvalues:./values.yaml"
+      writeBackTarget: "helmvalues:./values-dev.yaml"
 
   applicationRefs:
     - namePattern: "master-k8s-helm-dev"

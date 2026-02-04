@@ -134,3 +134,7 @@ See: `docs/app-of-apps.md`
 ## Observability (Prometheus + Grafana)
 
 See: `docs/observability-prom-grafana.md`
+
+## Alerts (PrometheusRule)
+
+See: `docs/alerts.md`

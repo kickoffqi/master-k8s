@@ -1,0 +1,60 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: master-k8s-alerts
+  labels:
+    # Must match kube-prometheus-stack release name so Prometheus picks up the rules
+    release: monitoring
+spec:
+  groups:
+    - name: master-k8s.rules
+      rules:
+        # 1) CrashLoopBackOff in dev/prod namespaces
+        - alert: MasterK8sPodCrashLoopBackOff
+          expr: sum by (namespace, pod, container) (kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff", namespace=~"master-k8s|master-k8s-prod"} > 0)
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod is CrashLoopBackOff ({{ $labels.namespace }}/{{ $labels.pod }})"
+            description: "Container {{ $labels.container }} is in CrashLoopBackOff for >5m. Check: kubectl -n {{ $labels.namespace }} describe pod {{ $labels.pod }}"
+
+        # 2) Pod not ready (any container) in dev/prod namespaces
+        - alert: MasterK8sPodNotReady
+          expr: (sum by (namespace, pod) (kube_pod_status_ready{condition="true", namespace=~"master-k8s|master-k8s-prod"} == 0) > 0)
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod not Ready ({{ $labels.namespace }}/{{ $labels.pod }})"
+            description: "Pod has not been Ready for >10m. Check events/logs."
+
+        # 3) Node memory pressure
+        - alert: KubernetesNodeMemoryPressure
+          expr: kube_node_status_condition{condition="MemoryPressure", status="true"} == 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Node has MemoryPressure ({{ $labels.node }})"
+            description: "Kubernetes reports MemoryPressure=true for >5m."
+
+        # 4) Node disk pressure
+        - alert: KubernetesNodeDiskPressure
+          expr: kube_node_status_condition{condition="DiskPressure", status="true"} == 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Node has DiskPressure ({{ $labels.node }})"
+            description: "Kubernetes reports DiskPressure=true for >5m."
+
+        # 5) Too many restarts in a short window
+        - alert: MasterK8sContainerHighRestartRate
+          expr: sum by (namespace, pod, container) (rate(kube_pod_container_status_restarts_total{namespace=~"master-k8s|master-k8s-prod"}[5m])) > 0.2
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High restart rate ({{ $labels.namespace }}/{{ $labels.pod }})"
+            description: "Restart rate > 0.2 per second over 5m for >10m. Investigate crash loops or OOMKills."

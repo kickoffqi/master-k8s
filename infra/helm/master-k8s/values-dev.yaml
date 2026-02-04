@@ -9,8 +9,8 @@ images:
     tag: sha-ac326e3
     pullPolicy: IfNotPresent
 replicaCount:
-  api: 5
-  frontend: 10
+  api: 1
+  frontend: 6
 ingress:
   enabled: true
   className: nginx

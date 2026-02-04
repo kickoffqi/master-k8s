@@ -1,0 +1,56 @@
+{{- if .Values.monitoring.serviceMonitor.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-master-k8s-api
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+    release: monitoring
+data:
+  master-k8s-api.json: |
+    {
+      "uid": "master-k8s-api",
+      "title": "Master K8s API (FastAPI)",
+      "tags": ["master-k8s", "fastapi"],
+      "timezone": "browser",
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "10s",
+      "panels": [
+        {
+          "type": "timeseries",
+          "title": "Request rate (req/s)",
+          "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total{job=~\".*events-api.*\"}[2m]))",
+              "legendFormat": "requests"
+            }
+          ]
+        },
+        {
+          "type": "timeseries",
+          "title": "Error rate (5xx req/s)",
+          "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total{job=~\".*events-api.*\",status=~\"5..\"}[2m]))",
+              "legendFormat": "5xx"
+            }
+          ]
+        },
+        {
+          "type": "timeseries",
+          "title": "Latency p95 (s)",
+          "gridPos": {"x": 0, "y": 8, "w": 24, "h": 8},
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=~\".*events-api.*\"}[5m])))",
+              "legendFormat": "p95"
+            }
+          ]
+        }
+      ]
+    }
+{{- end }}

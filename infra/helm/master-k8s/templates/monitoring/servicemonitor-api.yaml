@@ -1,0 +1,20 @@
+{{- if .Values.monitoring.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: master-k8s-api
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.namespace | quote }}
+  selector:
+    matchLabels:
+      app: events-api
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: {{ .Values.monitoring.serviceMonitor.interval | default "30s" | quote }}
+{{- end }}

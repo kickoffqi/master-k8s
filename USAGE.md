@@ -150,3 +150,7 @@ Defaults are defined in:
 - `infra/helm/master-k8s/values.yaml`
 - `infra/helm/master-k8s/values-dev.yaml`
 - `infra/helm/master-k8s/values-prod.yaml`
+
+## App metrics (/metrics)
+
+See: `docs/metrics.md`

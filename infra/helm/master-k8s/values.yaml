@@ -57,3 +57,8 @@ rollouts:
   - setWeight: 50
   - pause: {duration: 30s}
   - setWeight: 100
+
+monitoring:
+  serviceMonitor:
+    enabled: true
+    interval: 30s

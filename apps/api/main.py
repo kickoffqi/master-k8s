@@ -3,6 +3,7 @@ from typing import Dict, List, Optional
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException
+from prometheus_fastapi_instrumentator import Instrumentator
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import os
@@ -31,6 +32,8 @@ class EventUpdate(BaseModel):
 
 
 app = FastAPI(title="Master K8s Events API", version="0.3.0")
+#Add Prometheus instrumentation
+Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
 allowed_origins = os.getenv("CORS_ALLOW_ORIGINS", "*").split(",")
 app.add_middleware(

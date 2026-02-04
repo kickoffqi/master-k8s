@@ -24,9 +24,23 @@ ingress:
 
 api:
   corsAllowOrigins: "*"
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
 
 frontend:
   publicApiBaseUrl: "/api"
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
 
 rollouts:
   enabled: true

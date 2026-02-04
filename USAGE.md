@@ -138,3 +138,15 @@ See: `docs/observability-prom-grafana.md`
 ## Alerts (PrometheusRule)
 
 See: `docs/alerts.md`
+
+## Resource requests/limits
+
+This chart sets default CPU/memory requests and limits for API and frontend.
+
+- Without requests/limits, pods run as **BestEffort** and can be evicted first under pressure.
+- Requests influence scheduling & capacity planning.
+
+Defaults are defined in:
+- `infra/helm/master-k8s/values.yaml`
+- `infra/helm/master-k8s/values-dev.yaml`
+- `infra/helm/master-k8s/values-prod.yaml`

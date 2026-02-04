@@ -17,8 +17,22 @@ ingress:
   host: dev.master.local
 api:
   corsAllowOrigins: "*"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
 frontend:
   publicApiBaseUrl: "/api"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
 rollouts:
   enabled: true
   # Canary strategy example: 20% -> 50% -> 100%

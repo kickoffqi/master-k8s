@@ -32,6 +32,8 @@ class EventUpdate(BaseModel):
 
 
 app = FastAPI(title="Master K8s Events API", version="0.3.0")
+#Add Prometheus instrumentation
+Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
 allowed_origins = os.getenv("CORS_ALLOW_ORIGINS", "*").split(",")
 app.add_middleware(

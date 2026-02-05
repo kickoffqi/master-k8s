@@ -154,3 +154,7 @@ Defaults are defined in:
 ## App metrics (/metrics)
 
 See: `docs/metrics.md`
+
+## App metrics (/metrics)
+
+See: `docs/metrics.md` (ServiceMonitor + dashboard are deployed via addon `monitoring-app-metrics`).

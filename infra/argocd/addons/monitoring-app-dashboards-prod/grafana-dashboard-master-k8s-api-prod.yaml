@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-dashboard-master-k8s-api
+  name: grafana-dashboard-master-k8s-api-prod
   labels:
     grafana_dashboard: "1"
     release: monitoring
 data:
   master-k8s-api.json: |
     {
-      "uid": "master-k8s-api",
-      "title": "Master K8s API (FastAPI)",
+      "uid": "master-k8s-api-prod",
+      "title": "Master K8s API (FastAPI) - prod",
       "tags": ["master-k8s", "fastapi"],
       "timezone": "browser",
       "schemaVersion": 39,
@@ -21,8 +21,8 @@ data:
             "type": "custom",
             "name": "namespace",
             "label": "Namespace",
-            "query": "master-k8s,master-k8s-prod",
-            "current": {"text": "master-k8s", "value": "master-k8s"}
+            "query": "master-k8s-prod",
+            "current": {"text": "master-k8s-prod", "value": "master-k8s-prod"}
           }
         ]
       },

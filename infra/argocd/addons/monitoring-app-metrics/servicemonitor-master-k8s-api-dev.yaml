@@ -2,7 +2,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: master-k8s-api-dev
-  namespace: master-k8s
   labels:
     release: monitoring
 spec:

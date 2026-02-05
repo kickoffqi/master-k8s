@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monitoring-app-metrics-prod
+  name: monitoring-app-dashboards-prod
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/kickoffqi/master-k8s
-    targetRevision: dev
-    path: infra/argocd/addons/monitoring-app-metrics-prod
+    targetRevision: main
+    path: infra/argocd/addons/monitoring-app-dashboards
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

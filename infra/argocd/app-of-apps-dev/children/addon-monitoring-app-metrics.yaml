@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/kickoffqi/master-k8s
     targetRevision: dev
-    path: infra/argocd/addons/monitoring-app-metrics
+    path: infra/argocd/addons/monitoring-app-metrics-dev
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

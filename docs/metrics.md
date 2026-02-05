@@ -21,21 +21,21 @@ ServiceMonitors/dashboards directly, dev and prod ArgoCD apps would fight over t
 
 ## Verify
 
-1) Check API metrics:
+1) Confirm the API exposes metrics:
 
 ```bash
 kubectl -n master-k8s port-forward svc/events-api 8000:8000
 curl -s http://localhost:8000/metrics | head
 ```
 
-2) Check ServiceMonitors:
+2) In Prometheus UI, search for metrics:
 
-```bash
-kubectl -n monitoring get servicemonitor | grep master-k8s-api
-```
-
-3) In Prometheus UI, search for:
 - `http_requests_total`
 - `http_request_duration_seconds_bucket`
 
-4) In Grafana, look for dashboard: **Master K8s API (FastAPI)** and switch namespace variable.
+3) In Grafana, look for dashboard: **Master K8s API (FastAPI)**
+
+## Notes
+
+- The ServiceMonitor uses label `release: monitoring` to match the Prometheus instance from kube-prometheus-stack.
+- If the dashboard doesn't show up, check Grafana sidecar and ConfigMap labels.

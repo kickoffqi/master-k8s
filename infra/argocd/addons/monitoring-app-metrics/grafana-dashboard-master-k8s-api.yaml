@@ -1,9 +1,7 @@
-{{- if .Values.monitoring.serviceMonitor.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-master-k8s-api
-  namespace: monitoring
   labels:
     grafana_dashboard: "1"
     release: monitoring
@@ -15,8 +13,19 @@ data:
       "tags": ["master-k8s", "fastapi"],
       "timezone": "browser",
       "schemaVersion": 39,
-      "version": 1,
+      "version": 2,
       "refresh": "10s",
+      "templating": {
+        "list": [
+          {
+            "type": "custom",
+            "name": "namespace",
+            "label": "Namespace",
+            "query": "master-k8s,master-k8s-prod",
+            "current": {"text": "master-k8s", "value": "master-k8s"}
+          }
+        ]
+      },
       "panels": [
         {
           "type": "timeseries",
@@ -24,7 +33,7 @@ data:
           "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
           "targets": [
             {
-              "expr": "sum(rate(http_requests_total{job=~\".*events-api.*\"}[2m]))",
+              "expr": "sum(rate(http_requests_total{namespace=\"$namespace\"}[2m]))",
               "legendFormat": "requests"
             }
           ]
@@ -35,7 +44,7 @@ data:
           "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
           "targets": [
             {
-              "expr": "sum(rate(http_requests_total{job=~\".*events-api.*\",status=~\"5..\"}[2m]))",
+              "expr": "sum(rate(http_requests_total{namespace=\"$namespace\",status=~\"5..\"}[2m]))",
               "legendFormat": "5xx"
             }
           ]
@@ -46,11 +55,10 @@ data:
           "gridPos": {"x": 0, "y": 8, "w": 24, "h": 8},
           "targets": [
             {
-              "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=~\".*events-api.*\"}[5m])))",
+              "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{namespace=\"$namespace\"}[5m])))",
               "legendFormat": "p95"
             }
           ]
         }
       ]
     }
-{{- end }}

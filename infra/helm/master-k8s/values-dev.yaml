@@ -6,7 +6,7 @@ images:
     pullPolicy: IfNotPresent
   frontend:
     repository: ghcr.io/kickoffqi/master-k8s-frontend
-    tag: sha-d4ee402
+    tag: sha-34c992b
     pullPolicy: IfNotPresent
 replicaCount:
   api: 1

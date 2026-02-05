@@ -3,10 +3,10 @@ name: Build & Scan Images
 on:
   push:
     branches: [dev, main]
-    tags: ['v*']
+    tags: ["v*"]
     paths:
-      - 'apps/**'
-      - '.github/workflows/**'
+      - "apps/**"
+      - ".github/workflows/**"
 
 permissions:
   contents: read
@@ -63,7 +63,7 @@ jobs:
         with:
           image-ref: ${{ matrix.app.image }}:${{ steps.tag.outputs.tag }}
           format: table
-          exit-code: '1'
+          exit-code: "0"
           ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"

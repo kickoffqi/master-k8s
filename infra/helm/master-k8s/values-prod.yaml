@@ -1,53 +1,45 @@
-# Production values (pinned release tag for auditability)
-
 namespace: master-k8s-prod
-
 images:
   api:
     repository: ghcr.io/kickoffqi/master-k8s-api
-    # Pin to a release tag (e.g. v0.1.0). Promote via PR.
-    tag: v0.2.0
+    tag: v0.3.0
     pullPolicy: IfNotPresent
   frontend:
     repository: ghcr.io/kickoffqi/master-k8s-frontend
-    tag: v0.2.0
+    tag: v0.3.0
     pullPolicy: IfNotPresent
-
 replicaCount:
   api: 1
   frontend: 1
-
 ingress:
   enabled: true
   className: nginx
   host: master.local
-
 api:
-  corsAllowOrigins: "*"
+  corsAllowOrigins: '*'
   resources:
     requests:
-      cpu: "100m"
-      memory: "256Mi"
+      cpu: 100m
+      memory: 256Mi
     limits:
-      cpu: "1"
-      memory: "1Gi"
-
+      cpu: '1'
+      memory: 1Gi
 frontend:
-  publicApiBaseUrl: "/api"
+  publicApiBaseUrl: /api
   resources:
     requests:
-      cpu: "100m"
-      memory: "256Mi"
+      cpu: 100m
+      memory: 256Mi
     limits:
-      cpu: "1"
-      memory: "1Gi"
-
+      cpu: '1'
+      memory: 1Gi
 rollouts:
   enabled: true
-  # Canary strategy example: 20% -> 50% -> 100%
   canarySteps:
-    - setWeight: 20
-    - pause: { duration: 60s }
-    - setWeight: 50
-    - pause: { duration: 60s }
-    - setWeight: 100
+  - setWeight: 20
+  - pause:
+      duration: 60s
+  - setWeight: 50
+  - pause:
+      duration: 60s
+  - setWeight: 100

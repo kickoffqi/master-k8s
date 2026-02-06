@@ -31,7 +31,7 @@ class EventUpdate(BaseModel):
     end_time: Optional[datetime] = None
 
 
-app = FastAPI(title="Master K8s Events API", version="0.4.0")
+app = FastAPI(title="Master K8s Events API", version="0.5.0")
 #Add Prometheus instrumentation
 Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 

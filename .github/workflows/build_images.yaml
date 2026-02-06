@@ -7,6 +7,9 @@ on:
     paths:
       - "apps/**"
       - ".github/workflows/**"
+  workflow_run:
+    workflows: ["CI (PR checks)"]
+    types: [completed]
 
 permissions:
   contents: read
@@ -14,6 +17,11 @@ permissions:
 
 jobs:
   build:
+    # This condition ensures the job only runs if the previous workflow succeeded
+    # OR if it was triggered by a direct push.
+    if: >
+      github.event_name == 'push' || 
+      (github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/kickoffqi/master-k8s
-    targetRevision: main
+    targetRevision: dev
     path: infra/argocd/addons/monitoring-app-dashboards-dev
   destination:
     server: https://kubernetes.default.svc

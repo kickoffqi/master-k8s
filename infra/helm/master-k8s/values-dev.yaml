@@ -2,43 +2,44 @@ namespace: master-k8s
 images:
   api:
     repository: ghcr.io/kickoffqi/master-k8s-api
-    tag: sha-4089ee0
+    tag: sha-23b0399
     pullPolicy: IfNotPresent
   frontend:
     repository: ghcr.io/kickoffqi/master-k8s-frontend
-    tag: sha-8a3379c
+    tag: sha-23b0399
     pullPolicy: IfNotPresent
 replicaCount:
   api: 1
-  frontend: 1
+  frontend: 6
 ingress:
   enabled: true
   className: nginx
   host: dev.master.local
 api:
-  corsAllowOrigins: "*"
+  corsAllowOrigins: '*'
   resources:
     requests:
-      cpu: "100m"
-      memory: "128Mi"
+      cpu: 100m
+      memory: 128Mi
     limits:
-      cpu: "500m"
-      memory: "512Mi"
+      cpu: 500m
+      memory: 512Mi
 frontend:
-  publicApiBaseUrl: "/api"
+  publicApiBaseUrl: /api
   resources:
     requests:
-      cpu: "100m"
-      memory: "128Mi"
+      cpu: 100m
+      memory: 128Mi
     limits:
-      cpu: "500m"
-      memory: "512Mi"
+      cpu: 500m
+      memory: 512Mi
 rollouts:
   enabled: true
-  # Canary strategy example: 20% -> 50% -> 100%
   canarySteps:
   - setWeight: 20
-  - pause: {duration: 30s}
+  - pause:
+      duration: 30s
   - setWeight: 50
-  - pause: {duration: 30s}
+  - pause:
+      duration: 30s
   - setWeight: 100

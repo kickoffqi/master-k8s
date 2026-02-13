@@ -16,7 +16,7 @@ ingress:
   className: nginx
   host: dev.master.local
 api:
-  corsAllowOrigins: '*'
+  corsAllowOrigins: "*"
   resources:
     requests:
       cpu: 100m
@@ -36,10 +36,10 @@ frontend:
 rollouts:
   enabled: true
   canarySteps:
-  - setWeight: 20
-  - pause:
-      duration: 30s
-  - setWeight: 50
-  - pause:
-      duration: 30s
-  - setWeight: 100
+    - setWeight: 20
+    - pause:
+        duration: 30s
+    - setWeight: 50
+    - pause:
+        duration: 30s
+    - setWeight: 100

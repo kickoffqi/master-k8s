@@ -6,7 +6,7 @@ images:
     pullPolicy: IfNotPresent
   frontend:
     repository: ghcr.io/kickoffqi/master-k8s-frontend
-    tag: sha-cf863b9
+    tag: sha-235b929
     pullPolicy: IfNotPresent
 replicaCount:
   api: 1
@@ -16,7 +16,7 @@ ingress:
   className: nginx
   host: dev.master.local
 api:
-  corsAllowOrigins: "*"
+  corsAllowOrigins: '*'
   resources:
     requests:
       cpu: 100m
